@@ -52,3 +52,6 @@ load_backup: mkdata stop
 	@echo "Loading backup..."
 	@rsync -av --delete $(BACKUP_DIR)/ $(DATA_DIR)/
 	@$(MAKE) start
+
+logs:
+	@docker-compose logs -f

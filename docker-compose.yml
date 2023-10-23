@@ -6,10 +6,22 @@ services:
     tty: true
     stdin_open: true
     environment:
-      EULA: "TRUE"
+      MOTD: "Les petits potes de PolyBot"
+      DIFFICULTY: "normal"
+      WHITELIST: |
+        C0smic_Waves
+      EXISTING_WHITELIST_FILE: "SYNCHRONIZE"
+      OPS: |
+        C0smic_Waves
+      EXISTING_OPS_FILE: "SYNCHRONIZE"
+      ICON: "https://pasteboard.co/600EkKWvDvPC.png"
+      OVERRIDE_ICON: "TRUE"
+      MAX_PLAYERS: "5"
+      VIEW_DISTANCE: "16"
       TYPE: "MODRINTH"
       MODRINTH_MODPACK: "create-extra"
       VERSION: "LATEST"
+      EULA: "TRUE"
     ports:
       - "25565:25565"
     volumes:
