@@ -1,5 +1,5 @@
-*.secret
 *.pid
 *.log
 data
 backup
+secrets
