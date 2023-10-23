@@ -7,9 +7,10 @@ services:
     stdin_open: true
     environment:
       MOTD: "Les petits potes de PolyBot"
-      TYPE: "PAPER"
-      # TYPE: "MODRINTH"
-      # MODRINTH_MODPACK: "create-extra"
+      # TYPE: "PAPER"
+      TYPE: "MODRINTH"
+      MODRINTH_MODPACK: "create-extra"
+      MODRINTH_VERSION: "1.2.1"
       VERSION: "1.20.1"
       DIFFICULTY: "normal"
       WHITELIST: |
