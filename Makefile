@@ -19,24 +19,24 @@ default: start
 mkdata:
 	@mkdir -p $(DATA_DIR) $(BACKUP_DIR)
 
-start_tunnel:
-	@ssh -R *:$(SERVER_PORT):localhost:$(LOCAL_PORT) $(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
-
 stop_tunnel:
 	@if [ -f ssh_tunnel.pid ]; then \
 		kill `cat ssh_tunnel.pid` || echo "No SSH tunnel process found"; \
 		rm ssh_tunnel.pid; \
 	fi
 
-start: mkdata stop_tunnel
+start_tunnel: stop_tunnel
+	@ssh -N -R $(SERVER_PORT):$(LOCAL_PORT) $(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
+
+start: mkdata
 	@echo "Starting server..."
 	@docker-compose up -d
-	$(MAKE) start_tunnel
+	@$(MAKE) start_tunnel
 
 stop:
 	@echo "Stopping server..."
+	@$(MAKE) stop_tunnel
 	@docker-compose down
-	$(MAKE) stop_tunnel
 
 restart: stop start
 
@@ -46,9 +46,9 @@ rcon:
 backup: mkdata stop
 	@echo "Backing up data..."
 	@rsync -av --delete $(DATA_DIR)/ $(BACKUP_DIR)/
-	$(MAKE) start
+	@$(MAKE) start
 
 load_backup: mkdata stop
 	@echo "Loading backup..."
 	@rsync -av --delete $(BACKUP_DIR)/ $(DATA_DIR)/
-	$(MAKE) start
+	@$(MAKE) start
