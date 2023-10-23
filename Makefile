@@ -3,8 +3,8 @@ DATA_DIR="./data"
 BACKUP_DIR="./backup"
 
 # Cloud server username and IP address
-USERNAME=$(shell cat username.secret)
-SERVER_IP=$(shell cat server_ip.secret)
+USERNAME=$(shell cat secrets/username)
+SERVER_IP=$(shell cat secrets/server_ip)
 
 # Ports configuration
 SERVER_PORT="25565"
@@ -26,7 +26,7 @@ stop_tunnel:
 	fi
 
 start_tunnel: stop_tunnel
-	@ssh -nNT -R $(SERVER_PORT):$(LOCAL_PORT) $(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
+	@ssh -nNT -R $(SERVER_PORT):localhost:$(LOCAL_PORT) $(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
 
 start: mkdata
 	@echo "Starting server..."
