@@ -26,7 +26,7 @@ stop_tunnel:
 	fi
 
 start_tunnel: stop_tunnel
-	@ssh -N -R $(SERVER_PORT):$(LOCAL_PORT) $(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
+	@ssh -nNT -R $(SERVER_PORT):$(LOCAL_PORT) $(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
 
 start: mkdata
 	@echo "Starting server..."
