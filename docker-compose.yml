@@ -17,6 +17,7 @@ services:
       DIFFICULTY: "normal"
       WHITELIST: |
         C0smic_Waves
+        VorTreXan
       EXISTING_WHITELIST_FILE: "SYNCHRONIZE"
       OPS: |
         C0smic_Waves
