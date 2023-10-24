@@ -9,9 +9,11 @@ services:
       MOTD: "Les petits potes de PolyBot"
       # TYPE: "PAPER"
       TYPE: "MODRINTH"
-      MODRINTH_MODPACK: "create-extra"
-      MODRINTH_VERSION: "1.2.1"
-      VERSION: "1.20.1"
+      MODRINTH_MODPACK: "https://cdn.modrinth.com/data/UiTYKfqk/versions/1Nvz37oB/Polybot%20MC.mrpack"
+      # MODRINTH_VERSION: "0.1.0"
+      # VERSION: "1.20.1"
+      INIT_MEMORY: "2G"
+      MAX_MEMORY: "4G"
       DIFFICULTY: "normal"
       WHITELIST: |
         C0smic_Waves
@@ -25,7 +27,10 @@ services:
       VIEW_DISTANCE: "16"
       EULA: "TRUE"
     ports:
+      # Ports for the Minecraft server, Voice chat, and Dynmap
       - "25565:25565"
+      - "24454:24454"
+      - "8123:8123"
     volumes:
       - ./data:/data
     stop_grace_period: 5m
