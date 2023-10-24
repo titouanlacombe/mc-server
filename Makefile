@@ -6,10 +6,6 @@ BACKUP_DIR="./backup"
 USERNAME=$(shell cat secrets/username)
 SERVER_IP=$(shell cat secrets/server_ip)
 
-# Ports configuration
-SERVER_PORT="25565"
-LOCAL_PORT="25565"
-
 COMPOSE_PROJECT_NAME="mc-waves"
 
 default: start
@@ -25,8 +21,13 @@ stop_tunnel:
 		rm ssh_tunnel.pid; \
 	fi
 
+# Tunel port for the Minecraft server, Voice chat, and Dynmap
 start_tunnel: stop_tunnel
-	@ssh -nNT -R $(SERVER_PORT):localhost:$(LOCAL_PORT) $(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
+	@ssh -nNT \
+		-R 25565:localhost:25565 \
+		-R 24454:localhost:24454 \
+		-R 8123:localhost:8123 \
+		$(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
 
 start: mkdata
 	@echo "Starting server..."

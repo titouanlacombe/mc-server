@@ -1,6 +1,6 @@
 # MC Waves Server
 
-Server with the friends
+Server with the friends.
 
 ## Backup
 
