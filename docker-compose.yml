@@ -9,7 +9,7 @@ services:
       MOTD: "Les petits potes de PolyBot"
       # TYPE: "PAPER"
       TYPE: "MODRINTH"
-      MODRINTH_MODPACK: "https://cdn.modrinth.com/data/UiTYKfqk/versions/1Nvz37oB/Polybot%20MC.mrpack"
+      MODRINTH_MODPACK: "https://cdn.modrinth.com/data/UiTYKfqk/versions/AsrBmCVn/Polybot%20MC.mrpack"
       # MODRINTH_VERSION: "0.1.0"
       # VERSION: "1.20.1"
       INIT_MEMORY: "2G"
