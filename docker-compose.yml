@@ -28,10 +28,9 @@ services:
       VIEW_DISTANCE: "16"
       EULA: "TRUE"
     ports:
-      # Ports for the Minecraft server, Voice chat, and Dynmap
+      # Ports for the Minecraft server, Voice chat
       - "25565:25565"
       - "24454:24454"
-      - "8123:8123"
     volumes:
       - ./data:/data
     stop_grace_period: 5m

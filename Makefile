@@ -21,12 +21,11 @@ stop_tunnel:
 		rm ssh_tunnel.pid; \
 	fi
 
-# Tunel port for the Minecraft server, Voice chat, and Dynmap
+# Tunel port for the Minecraft server, Voice chat
 start_tunnel: stop_tunnel
 	@ssh -nNT \
 		-R 25565:localhost:25565 \
 		-R 24454:localhost:24454 \
-		-R 8123:localhost:8123 \
 		$(USERNAME)@$(SERVER_IP) &> tunnel.log & echo $$! > ssh_tunnel.pid
 
 start: mkdata
