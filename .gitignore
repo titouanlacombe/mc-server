@@ -1,5 +1,6 @@
 *.pid
 *.log
+*.env
+*.pyc
 data
 backup
-secrets
