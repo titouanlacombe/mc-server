@@ -11,7 +11,7 @@ mkdata:
 
 start_tunnel: stop_tunnel
 	@echo "Starting tunnel..."
-	@python3 tunnel.py &> tunnel.log & echo $$! > tunnel.pid
+	@python3 -u tunnel.py &> tunnel.log & echo $$! > tunnel.pid
 
 stop_tunnel:
 	@if [ -f tunnel.pid ]; then \
