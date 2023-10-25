@@ -35,12 +35,12 @@ async def main():
 	# Tunnel ports for the minecraft server and the voice chat
 	server_loc = f"{secrets['SERVER_USER']}@{secrets['SERVER_IP']}"
 	cmds = [
-		# Convert voice chat from UDP to TCP
-		['socat', 'UDP4-LISTEN:24455,reuseaddr,fork', 'UDP4:localhost:24454'],
-		# Tunnel the minecraft server port and the TCP voice chat port
+		# Convert port 24454/UDP to port 24455/TCP
+		['socat', 'UDP4-LISTEN:24455,reuseaddr,fork', 'TCP4:localhost:24454']
+		# Tunnel ports 25565 and 24455 to the server
 		['ssh', server_loc, '-nNT', "-R 25565:localhost:25565", "-R 24455:localhost:24455"],
-		# Convert on the server TCP voice chat back to UDP
-		['ssh', server_loc, 'socat UDP4-LISTEN:24455,reuseaddr,fork UDP4:localhost:24454'],
+		# On the server, convert port 24455/TCP to port 24454/UDP
+		['ssh', server_loc, 'socat', 'TCP4-LISTEN:24455,reuseaddr,fork', 'UDP4:localhost:24454'],
 	]
 
 	print("Starting tunnel...")
