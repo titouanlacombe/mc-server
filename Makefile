@@ -1,7 +1,5 @@
-# Define the source and destination directories
 DATA_DIR="./data"
 BACKUP_DIR="./backup"
-
 COMPOSE_PROJECT_NAME="mc-waves"
 
 default: start
@@ -9,28 +7,13 @@ default: start
 mkdata:
 	@mkdir -p $(DATA_DIR) $(BACKUP_DIR)
 
-start_tunnel: stop_tunnel
-	@echo "Starting tunnel..."
-	@python3 -u tunnel.py &> tunnel.log & echo $$! > tunnel.pid
-
-stop_tunnel:
-	@if [ -f tunnel.pid ]; then \
-		echo "Stopping tunnel..."; \
-		kill -2 $$(cat tunnel.pid) 2>/dev/null || echo "Tunnel not running"; \
-		rm tunnel.pid; \
-	fi
-
 start: mkdata
 	@echo "Starting server..."
 	@docker-compose up -d
-	@$(MAKE) start_tunnel
 
 stop:
 	@echo "Stopping server..."
-	@$(MAKE) stop_tunnel
 	@docker-compose down
-
-restart: stop start
 
 rcon:
 	@docker-compose exec mc-server rcon-cli
@@ -47,3 +30,5 @@ load_backup: mkdata stop
 
 logs:
 	@docker-compose logs -f
+
+restart: stop start
