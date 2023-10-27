@@ -3,8 +3,14 @@ version: '3'
 services:
   mc-server:
     image: itzg/minecraft-server:latest
+    stop_grace_period: 5m
     tty: true
     stdin_open: true
+    network_mode: "service:vpn-client"
+    depends_on:
+      - vpn-client
+    volumes:
+      - ./data:/data
     environment:
       MOTD: "Les petits potes de PolyBot"
       # TYPE: "PAPER"
@@ -27,10 +33,3 @@ services:
       MAX_PLAYERS: "5"
       VIEW_DISTANCE: "16"
       EULA: "TRUE"
-    ports:
-      # Ports for the Minecraft server, Voice chat
-      - "25565:25565"
-      - "24454:24454/udp"
-    volumes:
-      - ./data:/data
-    stop_grace_period: 5m
