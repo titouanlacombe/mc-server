@@ -6,7 +6,6 @@ services:
     stop_grace_period: 5m
     tty: true
     stdin_open: true
-    network_mode: "service:vpn-client"
     volumes:
       - ./data:/data
     ports:
