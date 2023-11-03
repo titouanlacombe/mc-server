@@ -7,10 +7,11 @@ services:
     tty: true
     stdin_open: true
     network_mode: "service:vpn-client"
-    depends_on:
-      - vpn-client
     volumes:
       - ./data:/data
+    ports:
+      - "25565:25565"
+      - "24454:24454/udp"
     environment:
       MOTD: "Les petits potes de PolyBot"
       # TYPE: "PAPER"
