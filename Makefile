@@ -21,12 +21,14 @@ rcon:
 backup: mkdata stop
 	@echo "Backing up data..."
 	@rsync -av --delete $(DATA_DIR)/ $(BACKUP_DIR)/
-	@$(MAKE) start
+
+backup_start: backup start
 
 load_backup: mkdata stop
 	@echo "Loading backup..."
 	@rsync -av --delete $(BACKUP_DIR)/ $(DATA_DIR)/
-	@$(MAKE) start
+
+load_backup_start: load_backup start
 
 logs:
 	@docker-compose logs -f
