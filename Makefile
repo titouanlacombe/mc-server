@@ -1,6 +1,6 @@
 DATA_DIR="./data"
 BACKUP_DIR="./backup"
-COMPOSE_PROJECT_NAME="mc-waves"
+COMPOSE="docker compose -p mc-waves"
 
 default: start
 
@@ -9,14 +9,14 @@ mkdata:
 
 start: mkdata
 	@echo "Starting server..."
-	@docker-compose up -d
+	@$(COMPOSE) up -d
 
 stop:
 	@echo "Stopping server..."
-	@docker-compose down
+	@$(COMPOSE) down
 
 rcon:
-	@docker-compose exec mc-server rcon-cli
+	@$(COMPOSE) exec mc-server rcon-cli
 
 backup: mkdata stop
 	@echo "Backing up data..."
@@ -31,6 +31,6 @@ load_backup: mkdata stop
 load_backup_start: load_backup start
 
 logs:
-	@docker-compose logs -f
+	@$(COMPOSE) logs -f
 
 restart: stop start
