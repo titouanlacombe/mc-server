@@ -1,6 +1,6 @@
-DATA_DIR="./data"
-BACKUP_DIR="./backup"
-COMPOSE="docker compose -p mc-waves"
+DATA_DIR=./data
+BACKUP_DIR=./backup
+COMPOSE=docker compose -p mc-waves
 
 default: start
 
@@ -32,5 +32,8 @@ load_backup_start: load_backup start
 
 logs:
 	@$(COMPOSE) logs -f
+
+tunnel:
+	supervisord -c supervisord.conf
 
 restart: stop start
