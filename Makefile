@@ -1,7 +1,6 @@
 BACKUPS_DIR=./backups
 DATA_DIR=./data
 SERVER_DIR=$(DATA_DIR)/mc-server
-VPN_DIR=$(DATA_DIR)/vpn-client
 COMPOSE=docker compose -p mc-waves
 TAR_ARGS=--use-compress-program=pigz
 
@@ -10,7 +9,7 @@ export
 default: up
 
 mkdata:
-	@mkdir -p $(BACKUPS_DIR) $(SERVER_DIR) $(VPN_DIR)
+	@mkdir -p $(BACKUPS_DIR) $(SERVER_DIR)
 
 up: mkdata
 	@echo "Starting server..."
