@@ -1,12 +1,16 @@
-DATA_DIR=./data
 BACKUPS_DIR=./backups
+DATA_DIR=./data
+SERVER_DIR=$(DATA_DIR)/mc-server
+VPN_DIR=$(DATA_DIR)/vpn-client
 COMPOSE=docker compose -p mc-waves
 TAR_ARGS=--use-compress-program=pigz
+
+export
 
 default: up
 
 mkdata:
-	@mkdir -p $(DATA_DIR) $(BACKUPS_DIR)
+	@mkdir -p $(BACKUPS_DIR) $(SERVER_DIR) $(VPN_DIR)
 
 up: mkdata
 	@echo "Starting server..."
@@ -27,10 +31,9 @@ rcon:
 tunnel:
 	@supervisord -c supervisord.conf
 
-# Backup to rotating backups/backup-x.tar.gz
 backup: mkdata down
 	@echo "Backing up data..."
-	@tar $(TAR_ARGS) -cf $(BACKUPS_DIR)/backup-$(shell date +%Y-%m-%d-%H:%M:%S).tar.gz -C $(DATA_DIR) .
+	@tar $(TAR_ARGS) -cf $(BACKUPS_DIR)/backup-$(shell date +%Y-%m-%d-%H:%M:%S).tar.gz -C $(SERVER_DIR) .
 
 backup_up: backup up
 
@@ -40,6 +43,6 @@ load_backup: mkdata down
 		echo "Usage: make load_backup BACKUP=backup.tar.gz"; \
 		exit 1; \
 	fi
-	@tar $(TAR_ARGS) -xf $(BACKUPS_DIR)/$(BACKUP) -C $(DATA_DIR)
+	@tar $(TAR_ARGS) -xf $(BACKUPS_DIR)/$(BACKUP) -C $(SERVER_DIR)
 
 load_backup_up: load_backup up

@@ -1,3 +1,4 @@
 data
 backups
 supervisord.pid
+mc-server.env

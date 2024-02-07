@@ -8,29 +8,8 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - ./data:/data
+      - $SERVER_DIR:/data
     ports:
       - "25565:25565"
       - "24454:24454/udp"
-    environment:
-      MOTD: "Les petits potes de PolyBot"
-      # TYPE: "PAPER"
-      TYPE: "MODRINTH"
-      MODRINTH_MODPACK: "https://cdn.modrinth.com/data/UiTYKfqk/versions/qCs0aZko/Polybot%20MC.mrpack"
-      # MODRINTH_VERSION: "0.1.0"
-      # VERSION: "1.20.1"
-      INIT_MEMORY: "2G"
-      MAX_MEMORY: "4G"
-      DIFFICULTY: "normal"
-      WHITELIST: |
-        C0smic_Waves
-        VorTreXan
-      EXISTING_WHITELIST_FILE: "SYNCHRONIZE"
-      OPS: |
-        C0smic_Waves
-      EXISTING_OPS_FILE: "SYNCHRONIZE"
-      ICON: "https://i.postimg.cc/CxfznG7d/server-icon-small.png"
-      OVERRIDE_ICON: "TRUE"
-      MAX_PLAYERS: "5"
-      VIEW_DISTANCE: "16"
-      EULA: "TRUE"
+    env_file: mc-server.env
