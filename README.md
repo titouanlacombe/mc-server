@@ -1,6 +1,6 @@
-# MC Waves Server
+# MC Server
 
-Server with friends.
+Simple Minecraft server config.
 
 ## Dependencies
 
