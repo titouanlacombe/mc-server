@@ -1,17 +1,31 @@
-BACKUPS_DIR=./backups
-DATA_DIR=./data
-SERVER_DIR=$(DATA_DIR)/mc-server
-COMPOSE=docker compose -p mc-waves
-TAR_ARGS=--use-compress-program=pigz
+# Create .env file if it does not exist
+$(shell ./setup_env.sh 1>&2)
 
+# TODO run as non-root user?
+PUID=$(shell id -u)
+PGID=$(shell id -g)
+
+DATA_DIR=./data
+SERVER_DIR=$(DATA_DIR)/app
+BACKUPS_DIR=$(DATA_DIR)/backups
+COMPOSE=docker compose -p mc-waves
+
+include .env
 export
+
+APP=app
+COMPOSE=docker compose
 
 default: up
 
 mkdata:
-	@mkdir -p $(BACKUPS_DIR) $(SERVER_DIR)
+	@for dir in $(BACKUPS_DIR) $(SERVER_DIR); do \
+		mkdir -p $$dir; \
+	done
 
-up: mkdata
+deps: mkdata
+
+up: deps
 	@echo "Starting server..."
 	@$(COMPOSE) up -d
 
@@ -19,29 +33,55 @@ down:
 	@echo "Stopping server..."
 	@$(COMPOSE) down
 
-restart: down up
+pullup: deps
+	@$(COMPOSE) up -d --pull always
+
+recreate: deps
+	@echo "Recreating server..."
+	@$(COMPOSE) up -d --force-recreate
+
+restart:
+	@echo "Restarting server..."
+	@$(COMPOSE) restart $(APP)
 
 logs:
-	@$(COMPOSE) logs -f
+	@$(COMPOSE) logs -f --tail=100 $(APP)
+
+config:
+	@$(COMPOSE) config
+
+ps:
+	@$(COMPOSE) ps
+
+stats:
+	@$(COMPOSE) stats
+
+attach:
+	@${COMPOSE} exec $(APP) bash
+
+attach-root:
+	@${COMPOSE} exec --user root $(APP) bash
 
 rcon:
-	@$(COMPOSE) exec mc-server rcon-cli
+	@$(COMPOSE) exec $(APP) rcon-cli
 
 tunnel:
-	@supervisord -c supervisord.conf
+	@echo "Not implemented yet"
 
-backup: mkdata down
+backup: deps down
 	@echo "Backing up data..."
-	@tar $(TAR_ARGS) -cf $(BACKUPS_DIR)/backup-$(shell date +%Y-%m-%d-%H:%M:%S).tar.gz -C $(SERVER_DIR) .
+	@BACKUP=$(BACKUPS_DIR)/backup-$(shell date +%Y-%m-%d-%H:%M:%S).tar.zst && \
+		tar "-I zstd -3 -T0" -cf ${BACKUP} -C $(SERVER_DIR) . && \
+		echo "Backup saved to $(BACKUP)"
 
 backup_up: backup up
 
-load_backup: mkdata down
+load_backup: deps down
 	@echo "Loading backup..."
 	@if [ -z "$(BACKUP)" ]; then \
-		echo "Usage: make load_backup BACKUP=backup.tar.gz"; \
+		echo "Usage: make load_backup BACKUP=backup.tar.zst"; \
 		exit 1; \
 	fi
-	@tar $(TAR_ARGS) -xf $(BACKUPS_DIR)/$(BACKUP) -C $(SERVER_DIR)
+	@tar -xf $(BACKUP) -C $(SERVER_DIR)
 
 load_backup_up: load_backup up
