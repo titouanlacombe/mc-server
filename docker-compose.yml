@@ -5,8 +5,6 @@ services:
     image: itzg/minecraft-server:latest
     restart: always
     stop_grace_period: 5m
-    tty: true
-    stdin_open: true
     volumes:
       - $SERVER_DIR:/data
     ports:
