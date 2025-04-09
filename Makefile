@@ -1,7 +1,6 @@
 # Create .env file if it does not exist
 $(shell ./setup_env.sh 1>&2)
 
-# TODO run as non-root user?
 PUID=$(shell id -u)
 PGID=$(shell id -g)
 
