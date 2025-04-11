@@ -3,7 +3,7 @@
 # Function to execute the tunnel script on the remote server
 manage_tunnel() {
     local action=$1
-    ACTION=$action envsubst < ./tunnel-server.sh | ssh $TUNNEL_SSH_HOST "bash -s"
+    ACTION=$action envsubst < ./tunnel-server.sh | ssh $TUNNEL_SSH_HOST "sudo bash -s"
 }
 
 # Clean up function
