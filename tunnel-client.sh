@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
 
-# Clean up
-cleanup() {
-	echo "Cleaning up..."
-	envsubst < ./tunnel-server-cleanup.sh | ssh $TUNNEL_SSH_HOST "bash -s"
+# Function to execute the tunnel script on the remote server
+manage_tunnel() {
+    local action=$1
+    ACTION=$action envsubst < ./tunnel-server.sh | ssh $TUNNEL_SSH_HOST "bash -s"
 }
 
-# Trap SIGINT
-trap "cleanup" INT
+# Clean up function
+cleanup() {
+    echo "Cleaning up..."
+    manage_tunnel "-D"
+    exit 0
+}
 
-# Launch ./tunnel-server.sh on the server using ssh
-envsubst < ./tunnel-server.sh | ssh $TUNNEL_SSH_HOST "bash -s"
+# Trap SIGINT to call the cleanup function
+trap cleanup INT
 
-# Wait for SIGINT
+echo "Launching tunnel script on the server..."
+manage_tunnel "-A"
+
 wait
