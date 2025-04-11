@@ -65,7 +65,7 @@ rcon:
 	@$(COMPOSE) exec $(APP) rcon-cli
 
 tunnel:
-	@echo "Not implemented yet"
+	@./tunnel.sh
 
 backup: deps down
 	@echo "Backing up data..."
