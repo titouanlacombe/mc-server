@@ -8,8 +8,8 @@ services:
     volumes:
       - $SERVER_DIR:/data
     ports:
-      - "25565:25565"
-      - "24454:24454/udp"
+      - $MC_PORT:25565
+      - $VOICE_PORT:24454/udp
     environment:
       UID: $PUID
       GID: $PGID

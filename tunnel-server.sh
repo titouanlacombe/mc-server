@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-MC_PORT=25565
-VOICE_PORT=24454
-
 # Allow forwarding of packets between the VPN interface and the public interface
 sudo iptables -A FORWARD -i $TUNNEL_INTERFACE_PUB -o $TUNNEL_INTERFACE_VPN -j ACCEPT
 sudo iptables -A FORWARD -i $TUNNEL_INTERFACE_VPN -o $TUNNEL_INTERFACE_PUB -j ACCEPT
