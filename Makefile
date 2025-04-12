@@ -7,13 +7,13 @@ PGID=$(shell id -g)
 DATA_DIR=./data
 SERVER_DIR=$(DATA_DIR)/app
 BACKUPS_DIR=$(DATA_DIR)/backups
-COMPOSE=docker compose -p mc-waves
 
 include .env
 export
 
 APP=app
 COMPOSE=docker compose
+COMPOSE_UP=$(COMPOSE) up -d --wait
 
 default: up
 
@@ -26,21 +26,20 @@ deps: mkdata
 
 up: deps
 	@echo "Starting server..."
-	@$(COMPOSE) up -d
+	@$(COMPOSE_UP)
+	@echo "Server started on port ${MC_PORT}"
 
 down:
 	@echo "Stopping server..."
 	@$(COMPOSE) down
 
 pullup: deps
-	@$(COMPOSE) up -d --pull always
+	@$(COMPOSE_UP) --pull always
 
 recreate: deps
-	@echo "Recreating server..."
-	@$(COMPOSE) up -d --force-recreate
+	@$(COMPOSE_UP) --force-recreate
 
 restart:
-	@echo "Restarting server..."
 	@$(COMPOSE) restart $(APP)
 
 logs:
@@ -75,12 +74,13 @@ backup: deps down
 
 backup_up: backup up
 
-load_backup: deps down
-	@echo "Loading backup..."
+backup_load: deps
 	@if [ -z "$(BACKUP)" ]; then \
-		echo "Usage: make load_backup BACKUP=backup.tar.zst"; \
+		echo "Usage: make $@ BACKUP=backup.tar.zst"; \
 		exit 1; \
 	fi
+	@$(MAKE) down
+	@echo "Loading backup..."
 	@tar -xf $(BACKUP) -C $(SERVER_DIR)
 
-load_backup_up: load_backup up
+backup_load_up: backup_load up
