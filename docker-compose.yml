@@ -10,6 +10,7 @@ services:
     ports:
       - $MC_PORT:25565
       - $VOICE_PORT:24454/udp
+      - $DYNMAP_PORT:8123
     environment:
       UID: $PUID
       GID: $PGID
