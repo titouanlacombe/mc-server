@@ -73,7 +73,7 @@ backup: deps down
 	@echo "Backing up data..."
 	@BACKUP=$(BACKUPS_DIR)/backup-$(shell date +%Y-%m-%d-%H:%M:%S).tar.zst && \
 		tar "-I zstd -3 -T0" -cf $$BACKUP -C $(SERVER_DIR) . && \
-		echo "Backup saved to $(BACKUP)"
+		echo "Backup saved to $$BACKUP"
 
 backup_up: backup up
 
