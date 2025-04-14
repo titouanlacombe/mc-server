@@ -45,6 +45,9 @@ restart:
 logs:
 	@$(COMPOSE) logs -f --tail=100 $(APP)
 
+dump_logs:
+	@$(COMPOSE) logs $(APP)
+
 config:
 	@$(COMPOSE) config
 
