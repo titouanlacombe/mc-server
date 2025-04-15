@@ -22,6 +22,9 @@ mkdata:
 		mkdir -p $$dir; \
 	done
 
+reset_pack:
+	@rm $(SERVER_DIR)/modpack.mrpack
+
 deps: mkdata
 
 up: deps
