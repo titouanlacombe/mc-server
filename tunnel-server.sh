@@ -13,8 +13,10 @@ iptables $ACTION FORWARD -i $TUNNEL_INTERFACE_VPN -o $TUNNEL_INTERFACE_PUB -j AC
 
 # Setup or teardown NAT for translating packets from the VPN interface to the public interface
 iptables -t nat $ACTION PREROUTING -p tcp -m tcp --dport $MC_PORT -i $TUNNEL_INTERFACE_PUB -j DNAT --to-destination $TUNNEL_LOCAL_IP:$MC_PORT
+iptables -t nat $ACTION PREROUTING -p tcp -m tcp --dport $DYNMAP_PORT -i $TUNNEL_INTERFACE_PUB -j DNAT --to-destination $TUNNEL_LOCAL_IP:$DYNMAP_PORT
 iptables -t nat $ACTION PREROUTING -p udp -m udp --dport $VOICE_PORT -i $TUNNEL_INTERFACE_PUB -j DNAT --to-destination $TUNNEL_LOCAL_IP:$VOICE_PORT
 
 # Setup or teardown reverse NAT
 iptables -t nat $ACTION POSTROUTING -p tcp -m tcp --dport $MC_PORT -d $TUNNEL_LOCAL_IP -j SNAT --to-source $TUNNEL_VPN_IP
+iptables -t nat $ACTION POSTROUTING -p tcp -m tcp --dport $DYNMAP_PORT -d $TUNNEL_LOCAL_IP -j SNAT --to-source $TUNNEL_VPN_IP
 iptables -t nat $ACTION POSTROUTING -p udp -m udp --dport $VOICE_PORT -d $TUNNEL_LOCAL_IP -j SNAT --to-source $TUNNEL_VPN_IP
