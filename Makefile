@@ -12,7 +12,8 @@ include .env
 export
 
 APP=app
-COMPOSE=docker compose
+COMPOSE_EXTRA=$(shell if [ -f docker-compose.extra.yml ]; then echo "-f docker-compose.extra.yml"; fi)
+COMPOSE=docker compose -f docker-compose.yml $(COMPOSE_EXTRA)
 COMPOSE_UP=$(COMPOSE) up -d --wait
 
 default: up
