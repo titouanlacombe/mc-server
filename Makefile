@@ -90,6 +90,7 @@ backup_load: deps
 	fi
 	@$(MAKE) down
 	@echo "Loading backup..."
+	@rm -rf $(SERVER_DIR)
 	@tar -xf $(BACKUP) -C $(SERVER_DIR)
 
 backup_load_up: backup_load up
