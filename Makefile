@@ -23,12 +23,14 @@ mkdata:
 		mkdir -p $$dir; \
 	done
 
-reset_pack:
-	@rm $(SERVER_DIR)/modpack.mrpack
-
 deps: mkdata
 
 up: deps
+	@if [ -f $(SERVER_DIR)/modpack.mrpack ]; then \
+		echo "Removing old modpack.mrpack"; \
+		rm $(SERVER_DIR)/modpack.mrpack; \
+	fi
+
 	@echo "Starting server..."
 	@$(COMPOSE_UP)
 	@echo "Server started on port ${MC_PORT}"
